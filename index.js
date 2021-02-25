@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-const {showAll, showAllRole, showAllEmployee} = require('./db/queries');
+const {viewAllDept, viewAllRoles, viewAllEmployees, addADepartment, addARole, addEmployee, updateEmployeeRole} = require('./db/queries');
 
  const promptMenu = () =>{
     console.log(`
@@ -20,28 +20,16 @@ const {showAll, showAllRole, showAllEmployee} = require('./db/queries');
             'view all employees',
             'add a department',
             'add a role',
+            'add an employee',
             'update an employee role'
         ]
     }]).then(menuItem=>{
         if(menuItem.menu === 'view all departments'){
-            showAll(function(err, result){
-                console.table(result);
-                promptMenu();
-            }, 'department');
+            viewAllDept(promptMenu);
         }else if(menuItem.menu === 'view all roles'){
-            //showAllRole();
-            showAll(function(err, result){
-                if (err) console.log("Database error!");
-                else {
-                    console.table(result);
-                    promptMenu();
-                }
-            }, 'role');
+            viewAllRoles(promptMenu);
         }else if(menuItem.menu === 'view all employees'){
-            showAll(function(err, result){
-                console.table(result);
-                promptMenu();
-            }, 'employee');
+           viewAllEmployees(promptMenu);
         }else if(menuItem.menu === 'add a department'){
             inquirer.prompt([
                 {
@@ -50,11 +38,15 @@ const {showAll, showAllRole, showAllEmployee} = require('./db/queries');
                     message: "Please Enter New Department Name: "
                 } 
             ]).then(deptName =>{
-                console.log(deptName);
-
+                addADepartment(deptName.name, promptMenu);
             })
+        }else if(menuItem.menu === 'add a role'){
+            addARole(promptMenu);
+        }else if(menuItem.menu === 'add an employee'){
+            addEmployee(promptMenu);
+        }else if(menuItem.menu === 'update an employee role'){
+            updateEmployeeRole(promptMenu);
         }
-        
     })
 }
 

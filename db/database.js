@@ -6,4 +6,8 @@ const connection = mysql.createConnection({
     database: 'employeetracker_db'
 });
 
-module.exports = connection;
+connect = () => connection;
+disconnect = () => connection.end();
+
+
+module.exports = {connect, disconnect};
