@@ -1,6 +1,19 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-const {viewAllDept, viewAllRoles, viewAllEmployees, addADepartment, addARole, addEmployee, updateEmployeeRole} = require('./db/queries');
+const {
+        viewAllDept, 
+        viewAllRoles, 
+        viewAllEmployees, 
+        addADepartment, 
+        addARole, 
+        addEmployee, 
+        updateEmployeeRole, 
+        updateEmployeeManager,
+        viewEmpbyManager,
+        viewEmpbyDept,
+        remove,
+        viewBudget
+    } = require('./db/queries');
 
  const promptMenu = () =>{
     console.log(`
@@ -21,7 +34,13 @@ const {viewAllDept, viewAllRoles, viewAllEmployees, addADepartment, addARole, ad
             'add a department',
             'add a role',
             'add an employee',
-            'update an employee role'
+            'update an employee role',
+            'update employee managers',
+            'view employees by manager',
+            'view employees by department',
+            'delete',
+            'view the total utilized budget',
+            new inquirer.Separator()
         ]
     }]).then(menuItem=>{
         if(menuItem.menu === 'view all departments'){
@@ -31,21 +50,23 @@ const {viewAllDept, viewAllRoles, viewAllEmployees, addADepartment, addARole, ad
         }else if(menuItem.menu === 'view all employees'){
            viewAllEmployees(promptMenu);
         }else if(menuItem.menu === 'add a department'){
-            inquirer.prompt([
-                {
-                    type: 'input',
-                    name: 'name',
-                    message: "Please Enter New Department Name: "
-                } 
-            ]).then(deptName =>{
-                addADepartment(deptName.name, promptMenu);
-            })
+            addADepartment(promptMenu);
         }else if(menuItem.menu === 'add a role'){
             addARole(promptMenu);
         }else if(menuItem.menu === 'add an employee'){
             addEmployee(promptMenu);
         }else if(menuItem.menu === 'update an employee role'){
             updateEmployeeRole(promptMenu);
+        }else if (menuItem.menu === 'update employee managers'){
+            updateEmployeeManager(promptMenu);
+        }else if (menuItem.menu === 'view employees by manager'){
+            viewEmpbyManager(promptMenu);
+        }else if (menuItem.menu === 'view employees by department'){
+            viewEmpbyDept(promptMenu);
+        }else if (menuItem.menu === 'delete'){
+            remove(promptMenu);
+        }else if('view the total utilized budget'){
+            viewBudget(promptMenu);
         }
     })
 }
