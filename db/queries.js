@@ -1,6 +1,7 @@
 const {connect, disconnect} = require('./database');
 const cTable = require('console.table');
 const inquirer = require('inquirer');
+connection = connect();
 
 const viewAllDept = (callback) =>{
     connection = connect();
@@ -377,6 +378,14 @@ const viewBudget = (callback) =>{
     })
     .catch(console.log)
 }
+
+const exit = () =>{
+    if(connection){
+        connection.end();
+        console.log('disconnecting');
+    } 
+}
+
 module.exports = {
     viewAllDept: viewAllDept,
     viewAllRoles: viewAllRoles,
@@ -389,5 +398,6 @@ module.exports = {
     viewEmpbyManager: viewEmpbyManager,
     viewEmpbyDept:viewEmpbyDept,
     remove: remove,
-    viewBudget: viewBudget
+    viewBudget: viewBudget,
+    exit: exit
 }

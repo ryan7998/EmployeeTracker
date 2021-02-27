@@ -12,7 +12,8 @@ const {
         viewEmpbyManager,
         viewEmpbyDept,
         remove,
-        viewBudget
+        viewBudget,
+        exit
     } = require('./db/queries');
 
  const promptMenu = () =>{
@@ -40,6 +41,7 @@ const {
             'view employees by department',
             'delete',
             'view the total utilized budget',
+            'exit',
             new inquirer.Separator()
         ]
     }]).then(menuItem=>{
@@ -65,8 +67,12 @@ const {
             viewEmpbyDept(promptMenu);
         }else if (menuItem.menu === 'delete'){
             remove(promptMenu);
-        }else if('view the total utilized budget'){
+        }else if(menuItem.menu === 'view the total utilized budget'){
             viewBudget(promptMenu);
+        }else{
+            exit();
+            console.log('exit');
+            process.exit()
         }
     })
 }
